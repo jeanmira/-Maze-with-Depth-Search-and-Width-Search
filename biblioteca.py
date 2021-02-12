@@ -17,8 +17,9 @@ import time
 
 
 def Dfs(tabuleiro, linha, coluna):
-    caminho = [(linha, coluna)]
-    contador = 0
+    caminho = [(linha, coluna), (linha, coluna)]
+
+    contador = 1
     final = False
     identificaNo = []
 
@@ -43,47 +44,61 @@ def Dfs(tabuleiro, linha, coluna):
         identificaNo.append((linha-1, coluna))
         identificaNo.append((linha, coluna+1)) '''
 
+        print(tabuleiro[linha][coluna], "-",
+              caminho[contador-1], (linha+1, coluna))
+        print(caminho)
+        print(contador-1)
+
         # Verifica para baixo
-        if(linha > 0 and linha < 10 and coluna > 0 and coluna < 10 and tabuleiro[linha + 1][coluna] == 1 and caminho[contador] != (linha+1, coluna)):
+        if(linha > 0 and linha < 10 and coluna > 0 and coluna < 10 and tabuleiro[linha + 1][coluna] == 1 and caminho[contador-2] != (linha+1, coluna)):
             linha += 1
             caminho.append((linha, coluna))
+            contador = len(caminho)
 
         if (tabuleiro[linha + 1][coluna] == 3):
             linha += 1
+            ''' print(caminho[contador-1], (linha+1, coluna)) '''
             caminho.append((linha, coluna))
+            contador = len(caminho)
             final = True
 
         # Veridica para a esquerda
-        if(linha > 0 and linha < 10 and coluna > 0 and coluna < 10 and tabuleiro[linha][coluna - 1] == 1 and caminho[contador] != (linha, coluna-1)):
+        if(linha > 0 and linha < 10 and coluna > 0 and coluna < 10 and tabuleiro[linha][coluna - 1] == 1 and caminho[contador-2] != (linha, coluna-1)):
             coluna -= 1
             caminho.append((linha, coluna))
+            contador = len(caminho)
 
         if (tabuleiro[linha][coluna - 1] == 3):
             coluna -= 1
             caminho.append((linha, coluna))
+            contador = len(caminho)
             final = True
 
         # Veridica para a direita
-        if(linha > 0 and linha < 10 and coluna > 0 and coluna < 10 and tabuleiro[linha][coluna + 1] == 1 and caminho[contador] != (linha, coluna+1)):
+        if(linha > 0 and linha < 10 and coluna > 0 and coluna < 10 and tabuleiro[linha][coluna + 1] == 1 and caminho[contador-2] != (linha, coluna+1)):
             coluna += 1
             caminho.append((linha, coluna))
+            contador = len(caminho)
 
         if (tabuleiro[linha][coluna + 1] == 3):
             coluna += 1
             caminho.append((linha, coluna))
+            contador = len(caminho)
             final = True
 
         # Verifica para cima
-        if(linha > 0 and linha < 10 and coluna > 0 and coluna < 10 and tabuleiro[linha - 1][coluna] == 1 and caminho[contador] != (linha-1, coluna)):
+        if(linha > 0 and linha < 10 and coluna > 0 and coluna < 10 and tabuleiro[linha - 1][coluna] == 1 and caminho[contador-2] != (linha-1, coluna)):
             linha -= 1
             caminho.append((linha, coluna))
+            contador = len(caminho)
 
         if (tabuleiro[linha-1][coluna] == 3):
             linha -= 1
             caminho.append((linha, coluna))
+            contador = len(caminho)
             final = True
+        time.sleep(2)
 
-        contador += 1
     return(caminho, final, contador)
 
 
@@ -190,7 +205,7 @@ def Grafico(tabuleiro):
 
                             pygame.draw.rect(
                                 tela, AMARELO, ((col - 1) * 40, (lin - 1) * 40, 37, 37), 0)
-                    time.sleep(1)
+                    time.sleep(0.5)
                     # Atualiza a tela
                     pygame.display.update()
                 continuar = False
