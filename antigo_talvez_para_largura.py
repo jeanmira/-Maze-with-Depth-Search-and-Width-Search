@@ -16,9 +16,110 @@ import time
 #-----------------------------------------------------------------------------#
 
 
+def VerificaNo(identificaNo, tabuleiro, col, lin):
+    # Verifica se tem 3 nos
+    if (lin > 0 and lin < 10 and col > 0 and col < 10 and tabuleiro[lin][col - 1] == 0 and tabuleiro[lin][col + 1] == 0 and tabuleiro[lin + 1][col] == 0):
+        identificaNo.append((lin, col))
+        identificaNo.append((lin, col-1))
+        identificaNo.append((lin, col+1))
+        identificaNo.append((lin+1, col))
+        no = True
+
+        semSaida = False
+
+        contador = 1
+        final = False
+
+        i = 1
+        controle = False
+
+        # Faz ate encontrar o 3
+        while (final != True or i != 3):
+
+            if (controle == False):
+                linha, coluna = identificaNo[i]
+                controle = True
+                caminho = [identificaNo[i], identificaNo[i]]
+
+            # Verifica para baixo
+            if(linha > 0 and linha <= 10 and coluna > 0 and coluna <= 10 and (linha+1, coluna) != identificaNo[0] and tabuleiro[linha + 1][coluna] == 0 and caminho[contador-2] != (linha+1, coluna)):
+                linha += 1
+                caminho.append((linha, coluna))
+                contador = len(caminho)
+
+            if (tabuleiro[linha + 1][coluna] == 3):
+                linha += 1
+                caminho.append((linha, coluna))
+                contador = len(caminho)
+                final = True
+
+            # Efetua recursividade caso o objeto tenha um novo no
+            VerificaNo(identificaNo, tabuleiro, coluna, linha)
+
+            # Veridica para a esquerda
+            if(linha > 0 and linha <= 10 and coluna > 0 and coluna <= 10 and (linha, coluna-1) != identificaNo[0] and tabuleiro[linha][coluna - 1] == 0 and caminho[contador-2] != (linha, coluna-1)):
+                coluna -= 1
+                caminho.append((linha, coluna))
+                contador = len(caminho)
+
+            if (tabuleiro[linha][coluna - 1] == 3):
+                coluna -= 1
+                caminho.append((linha, coluna))
+                contador = len(caminho)
+                final = True
+
+            # Veridica para a direita
+            if(linha > 0 and linha <= 10 and coluna > 0 and coluna <= 10 and (linha, coluna+1) != identificaNo[0] and tabuleiro[linha][coluna + 1] == 0 and caminho[contador-2] != (linha, coluna+1)):
+                coluna += 1
+                caminho.append((linha, coluna))
+                contador = len(caminho)
+
+            if (tabuleiro[linha][coluna + 1] == 3):
+                coluna += 1
+                caminho.append((linha, coluna))
+                contador = len(caminho)
+                final = True
+
+            # Verifica para cima
+            if(linha > 0 and linha <= 10 and coluna > 0 and coluna <= 10 and (linha-1, coluna) != identificaNo[0] and tabuleiro[linha - 1][coluna] == 0 and caminho[contador-2] != (linha-1, coluna)):
+                linha -= 1
+                caminho.append((linha, coluna))
+                contador = len(caminho)
+
+            if (tabuleiro[linha-1][coluna] == 3):
+                linha -= 1
+                caminho.append((linha, coluna))
+                contador = len(caminho)
+                final = True
+
+            # Verifica se esta sem saida so podendo voltar por onde venho
+            if(tabuleiro[linha][coluna+1] != 1 and tabuleiro[linha+1][coluna] != 0 and tabuleiro[linha-1][coluna] != 0 and tabuleiro[linha][coluna-1] != 0):
+                semSaida = True
+            if(tabuleiro[linha][coluna+1] != 0 and tabuleiro[linha+1][coluna] != 1 and tabuleiro[linha-1][coluna] != 0 and tabuleiro[linha][coluna-1] != 0):
+                semSaida = True
+            if(tabuleiro[linha][coluna+1] != 0 and tabuleiro[linha+1][coluna] != 0 and tabuleiro[linha-1][coluna] != 1 and tabuleiro[linha][coluna-1] != 0):
+                semSaida = True
+            if(tabuleiro[linha][coluna+1] != 0 and tabuleiro[linha+1][coluna] != 0 and tabuleiro[linha-1][coluna] != 0 and tabuleiro[linha][coluna-1] != 1):
+                semSaida = True
+
+            # Parte principal responsavel por reiniciar a busca caso o caminho nao de em nada
+            if ((linha-1, coluna) == identificaNo[0] or semSaida == True):
+                i += 1
+                contador = 1
+                controle = False
+                semSaida = False
+
+            if(tabuleiro[linha][coluna] == 3):
+                return (caminho, True)
+
+            # time.sleep(1)
+    else:
+        return (0, False)
+
+
 def Dfs(tabuleiro, linha, coluna):
     caminho = [(linha, coluna), (linha, coluna)]
-    repeticao = 0
+
     contador = 1
     final = False
     no = False
@@ -28,32 +129,14 @@ def Dfs(tabuleiro, linha, coluna):
     # Faz ate encontrar o 3
     while (final != True):
 
-        # ---------------------------------------------------
-        # print(caminho[contador-2], (linha+1, coluna), "\n")
-        # print(caminho)
-        # print(identificaNo, "\n")
-        # ---------------------------------------------------
+        #print(identificaNo, "\n")
 
-        # Gera numero aleatorio de 1 a 4 para determinar qual posicao aleatoria ele deve entrar
-        # Serve para o agente nao entrar e seguir na mesma posicao infinitamente
-        acesso = randint(1, 4)
-
-        # -----------------------
-        # Funcoes sucessor
-        # -----------------------
-
+        print(caminho)
         # Verifica para baixo
-        if(acesso == 1 and linha > 0 and linha <= 10 and coluna > 0 and coluna <= 10 and tabuleiro[linha + 1][coluna] == 0):
-            # If inicialmente criado para nao deixar o agente voltar a posicao anterior, a nao ser que entre em um caminho sem volta
-            # if(caminho[contador-2] != (linha+1, coluna) or repeticao > 2):
+        if(linha > 0 and linha <= 10 and coluna > 0 and coluna <= 10 and tabuleiro[linha + 1][coluna] == 0 and caminho[contador-2] != (linha+1, coluna)):
             linha += 1
             caminho.append((linha, coluna))
             contador = len(caminho)
-            repeticao = 0
-
-        # ----------------------
-        # Teste de Objetivo
-        # ----------------------
 
         if (tabuleiro[linha + 1][coluna] == 3):
             linha += 1
@@ -61,22 +144,22 @@ def Dfs(tabuleiro, linha, coluna):
             contador = len(caminho)
             final = True
 
-        # -----------------------
-        # Funcoes sucessor
-        # -----------------------
+        # Funcao que verifica se ha algum no, se tiver entra e ela faz a analise de busca
+        vetorNo, resposta = VerificaNo(identificaNo, tabuleiro, coluna, linha)
+
+        if resposta == True:
+            for i in range(len(vetorNo)):
+                if i != 0:
+                    caminho.append(vetorNo[i])
+            final = True
+            print(caminho)
+            return(caminho, final)
 
         # Veridica para a esquerda
-        if(acesso == 2 and linha > 0 and linha <= 10 and coluna > 0 and coluna <= 10 and tabuleiro[linha][coluna - 1] == 0):
-            # If inicialmente criado para nao deixar o agente voltar a posicao anterior, a nao ser que entre em um caminho sem volta
-            # if (caminho[contador-2] != (linha, coluna-1) or repeticao > 2):
+        if(linha > 0 and linha <= 10 and coluna > 0 and coluna <= 10 and tabuleiro[linha][coluna - 1] == 0 and caminho[contador-2] != (linha, coluna-1)):
             coluna -= 1
             caminho.append((linha, coluna))
             contador = len(caminho)
-            repeticao = 0
-
-        # ----------------------
-        # Teste de Objetivo
-        # ----------------------
 
         if (tabuleiro[linha][coluna - 1] == 3):
             coluna -= 1
@@ -84,22 +167,11 @@ def Dfs(tabuleiro, linha, coluna):
             contador = len(caminho)
             final = True
 
-        # -----------------------
-        # Funcoes sucessor
-        # -----------------------
-
         # Veridica para a direita
-        if(acesso == 3 and linha > 0 and linha <= 10 and coluna > 0 and coluna <= 10 and tabuleiro[linha][coluna + 1] == 0):
-            # If inicialmente criado para nao deixar o agente voltar a posicao anterior, a nao ser que entre em um caminho sem volta
-            # if (caminho[contador-2] != (linha, coluna+1) or repeticao > 2):
+        if(linha > 0 and linha <= 10 and coluna > 0 and coluna <= 10 and tabuleiro[linha][coluna + 1] == 0 and caminho[contador-2] != (linha, coluna+1)):
             coluna += 1
             caminho.append((linha, coluna))
             contador = len(caminho)
-            repeticao = 0
-
-        # ----------------------
-        # Teste de Objetivo
-        # ----------------------
 
         if (tabuleiro[linha][coluna + 1] == 3):
             coluna += 1
@@ -107,45 +179,25 @@ def Dfs(tabuleiro, linha, coluna):
             contador = len(caminho)
             final = True
 
-        # -----------------------
-        # Funcoes sucessor
-        # -----------------------
-
         # Verifica para cima
-        if(acesso == 4 and linha > 0 and linha <= 10 and coluna > 0 and coluna <= 10 and tabuleiro[linha - 1][coluna] == 0):
-            # If inicialmente criado para nao deixar o agente voltar a posicao anterior, a nao ser que entre em um caminho sem volta
-            # if(caminho[contador-2] != (linha-1, coluna) or repeticao > 2):
+        if(linha > 0 and linha <= 10 and coluna > 0 and coluna <= 10 and tabuleiro[linha - 1][coluna] == 0 and caminho[contador-2] != (linha-1, coluna)):
             linha -= 1
             caminho.append((linha, coluna))
             contador = len(caminho)
-            repeticao = 0
-
-        # ----------------------
-        # Teste de Objetivo
-        # ----------------------
 
         if (tabuleiro[linha-1][coluna] == 3):
             linha -= 1
             caminho.append((linha, coluna))
             contador = len(caminho)
             final = True
-
-        repeticao += 1
         # time.sleep(1)
 
     return(caminho, final)
 
 
-def interacoes(caminho):
-    return len(caminho)
-
-
 def Grafico(tabuleiro):
     # Inicializa o jogo
     pygame.init()
-
-    # Velocidade da demonstracao
-    Velocidade = 0.01
 
     # Inicializa e faz o set do tamanho do display
     tela = pygame.display.set_mode((397, 397))
@@ -153,7 +205,7 @@ def Grafico(tabuleiro):
     resultado = False
 
     # Nome do Jogo
-    pygame.display.set_caption("DFS - Labirinto")
+    pygame.display.set_caption("BFS/DFS - Labirinto")
 
     # Cria cores para
     BRANCO = (255, 255, 255)
@@ -189,9 +241,7 @@ def Grafico(tabuleiro):
                 # Se o usuario clicar no x fecha o display
                 if evento.type == pygame.QUIT:
                     caminho = False
-            # ----------------------------------------------------------------------------
-            # Bloco da parte grafica inicial
-            # ----------------------------------------------------------------------------
+
             linha = 0
             coluna = 0
 
@@ -216,26 +266,15 @@ def Grafico(tabuleiro):
             # Atualiza a tela
             pygame.display.update()
 
-            # ----------------------------------------------------------------------------
-            # Bloco da analise e da parte grafica depois da analise
-            # ----------------------------------------------------------------------------
             if(resultado == False):
-                # Onde o agente inicializa
                 caminho, resultado = Dfs(tabuleiro, 1, 1)
+                # print(caminho)
 
             # Imprimi toda parte final da analise
             else:
-                print("Custo de Etapa Total:", interacoes(caminho))
-
                 for i in range(len(caminho)):
                     lin, col = caminho[i]
                     # print(col, lin, i)
-
-                    # Le a tela do display
-                    for evento in pygame.event.get():
-                        # Se o usuario clicar no x fecha o display
-                        if evento.type == pygame.QUIT:
-                            caminho = False
 
                     for linha in range(1, 11):
                         for coluna in range(1, 11):
@@ -260,13 +299,9 @@ def Grafico(tabuleiro):
 
                             pygame.draw.rect(
                                 tela, AMARELO, ((col - 1) * 40, (lin - 1) * 40, 37, 37), 0)
-
-                    # Para demonstrar mais lento
-                    time.sleep(Velocidade)
-
+                    time.sleep(0.2)
                     # Atualiza a tela
                     pygame.display.update()
-
                 continuar = False
 
         # Le a tela do display
