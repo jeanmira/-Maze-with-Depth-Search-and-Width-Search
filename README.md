@@ -1,6 +1,6 @@
 # Labirinto-com-BFS-e-DFS
 
-####Como executar:
+#### Como executar:
 
     • Basta ir na main do programa e escolher o tabuleiro 1,2 entre outros;
     • Depois de escolher salvar o arquivo main.py e na pasta do arquivo pelo terminal executar o comando “make run”’
