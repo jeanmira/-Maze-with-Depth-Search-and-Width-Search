@@ -219,6 +219,7 @@ def Grafico(tabuleiro):
                        # Se o usuário clicar no x fechar o display
                        if evento.type == pygame.QUIT:
                            caminho = False
+                           sair = False
  
                    for linha in range(1, 11):
                        for coluna in range(1, 11):
