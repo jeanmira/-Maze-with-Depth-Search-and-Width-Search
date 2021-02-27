@@ -5,7 +5,7 @@
 # Versão: 1.0
 # Criado em: 11/02/2021
 # Sistema operacional: Linux - Ubuntu 20.04.1 LTS
- 
+# Python 3
 #------------------------------ Pacotes --------------------------------------#
 import biblioteca as bib
 import numpy as np
