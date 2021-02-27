@@ -17,5 +17,6 @@ packages:
 	sudo apt-get upgrade
 
 run:
+	python3 largura.py
 	python3 main.py
 

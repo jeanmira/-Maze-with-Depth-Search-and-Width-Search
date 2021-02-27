@@ -69,6 +69,7 @@ tabuleiro4 = np.array([[2, 1, 1, 1, 1, 0, 0, 0, 0, 0],                   # 0
                       [1, 0, 0, 1, 0, 0, 1, 1, 1, 1],                   # 8
                       [1, 0, 1, 1, 3, 0, 0, 0, 0, 0]], dtype=np.int)    # 9
  
-bib.Grafico(tabuleiro2)
+bib.Grafico(tabuleiro2) # Executa busca em profundidade
+
  
 

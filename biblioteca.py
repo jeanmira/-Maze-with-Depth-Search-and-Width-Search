@@ -128,7 +128,7 @@ def Grafico(tabuleiro):
    pygame.init()
  
    # Velocidade da demonstração
-   Velocidade = 0.01
+   Velocidade = 0.08
  
    # Inicializa e faz o set do tamanho do display
    tela = pygame.display.set_mode((397, 397))
@@ -261,4 +261,3 @@ def Grafico(tabuleiro):
  
    # Fecha o Jogo
    pygame.quit()
-
