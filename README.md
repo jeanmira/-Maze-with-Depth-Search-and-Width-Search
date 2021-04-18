@@ -1,4 +1,4 @@
-# Labirinto-com-BFS-e-DFS
+# Labirinto-com-BFS-e-DFS / Maze with Depth Search and Width Search
  
 #### Como executar:
  
